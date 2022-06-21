@@ -312,6 +312,8 @@ static int ehci_usb_ofdata_to_platdata(struct udevice *dev)
 	enum usb_dr_mode dr_mode;
 	const struct fdt_property *extcon;
 
+	printf("offffffffffffffffffffffffffff\n");
+	plat->init_type = USB_INIT_DEVICE;
 	extcon = fdt_get_property(gd->fdt_blob, dev_of_offset(dev),
 			"extcon", NULL);
 	if (extcon) {
@@ -341,6 +343,7 @@ check_type:
 		return -ENODEV;
 	}
 
+	
 	return 0;
 }
 
@@ -374,6 +377,7 @@ static int ehci_usb_bind(struct udevice *dev)
 	 * the driver is fully converted to DT probing.
 	 */
 	u32 controller_spacing;
+	printf("binding..............\n");
 
 	if (dev->req_seq == -1) {
 		if (IS_ENABLED(CONFIG_MX6))
@@ -397,6 +401,8 @@ static int ehci_usb_probe(struct udevice *dev)
 	struct ehci_hccr *hccr;
 	struct ehci_hcor *hcor;
 	int ret;
+
+	printf("probing\n");
 
 #if defined(CONFIG_MX6)
 	if (mx6_usb_fused((u32)ehci)) {
