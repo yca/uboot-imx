@@ -13,8 +13,8 @@
 	compatible = "fsl,imx8mn-ddr4-evk", "fsl,imx8mn";
 
 	chosen {
-		bootargs = "console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200";
-		stdout-path = &uart2;
+		bootargs = "console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200";
+		stdout-path = &uart3;
 	};
 
 	reg_usdhc2_vmmc: regulator-usdhc2 {
@@ -162,6 +162,13 @@
 		fsl,pins = <
 			MX8MN_IOMUXC_UART2_RXD_UART2_DCE_RX	0x140
 			MX8MN_IOMUXC_UART2_TXD_UART2_DCE_TX	0x140
+		>;
+	};
+
+	pinctrl_uart3: uart3grp {
+		fsl,pins = <
+			MX8MN_IOMUXC_UART3_RXD_UART3_DCE_RX	0x140
+			MX8MN_IOMUXC_UART3_TXD_UART3_DCE_TX	0x140
 		>;
 	};
 
@@ -524,20 +531,9 @@
 	status = "okay";
 };
 
-&uart2 { /* console */
+&uart3 { /* console */
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart2>;
-	status = "okay";
-};
-
-&usdhc2 {
-	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-	cd-gpios = <&gpio1 15 GPIO_ACTIVE_LOW>;
-	bus-width = <4>;
-	vmmc-supply = <&reg_usdhc2_vmmc>;
+	pinctrl-0 = <&pinctrl_uart3>;
 	status = "okay";
 };
 
