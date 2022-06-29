@@ -298,11 +298,11 @@
 };
 
 &usbotg1 {
+	dr_mode = "peripheral";
 	status = "okay";
-	extcon = <&ptn5110>;
-};
-
-&usbotg2 {
-	status = "okay";
-	extcon = <&ptn5110_2>;
+	picophy,pre-emp-curr-control = <3>;
+	picophy,dc-vol-level-adjust = <7>;
+	srp-disable;
+	hnp-disable;
+	adp-disable;
 };
