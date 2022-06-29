@@ -353,6 +353,39 @@ int spl_parse_image_header(struct spl_image_info *spl_image,
 	return 0;
 }
 
+#ifdef BEFORE_BOOT_MEM_TEST
+static void dump(const char *mem, int size)
+{
+	const int csize = 16;
+	for (int i = 0; i < size; i += csize) {
+		printf("0x%x: ", i);
+		for (int j = 0; j < csize; j++) {
+			printf("0x%x ", mem[i + j]);
+		}
+		printf("\n");
+	}
+}
+
+static void domemtest(int *mem, int size)
+{
+	int rands[] = {123, 456, 111, 465, 998, 123, 889, 877};
+	for (int i = 0; i < size; i++) {
+		int t = rands[i & 0x7];
+		mem[i] = t;
+	}
+	int errcnt = 0;
+	for (int i = 0; i < size; i++) {
+		int t = rands[i & 0x7];
+		if (mem[i] != t) {
+			errcnt++;
+			printf("memory fail at 0x%x\n", i);
+		}
+	}
+
+	printf("memory test completed with %d errors\n", errcnt);
+}
+#endif
+
 __weak void __noreturn jump_to_image_no_args(struct spl_image_info *spl_image)
 {
 	typedef void __noreturn (*image_entry_noargs_t)(void);
@@ -361,6 +394,10 @@ __weak void __noreturn jump_to_image_no_args(struct spl_image_info *spl_image)
 		(image_entry_noargs_t)spl_image->entry_point;
 
 	debug("image entry point: 0x%lx\n", spl_image->entry_point);
+#if BEFORE_BOOT_MEM_TEST
+	dump(CONFIG_SYS_TEXT_BASE, 640);
+	domemtest((int *)CONFIG_SYS_TEXT_BASE, 10 * 1024 * 1024);
+#endif
 	image_entry();
 }
 
