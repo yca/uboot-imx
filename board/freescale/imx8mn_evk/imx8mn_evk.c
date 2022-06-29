@@ -80,8 +80,29 @@ int board_init(void)
 	return 0;
 }
 
+static int force_no_fastboot = 0;
+
+#if defined(CONFIG_USB_ETHER) && \
+	(!defined(CONFIG_SPL_BUILD) || defined(CONFIG_SPL_USB_ETHER))
+int board_eth_init(bd_t *bis)
+{
+	if (is_usb_boot() && force_no_fastboot == 0) {
+		/* probably we'll need fastboot, don't init ether */
+		return -1;
+	}
+	env_set("ethact", "usb_ether");
+	env_set("usbnet_devaddr", "f8:dc:7a:00:00:02");
+	env_set("usbnet_hostaddr", "f8:dc:7a:00:00:01");
+	return usb_eth_initialize(bis);
+}
+#endif
+
 int board_late_init(void)
 {
+	if (is_usb_boot() && force_no_fastboot == 0)
+		env_set("bootpins", "usb");
+	else
+		env_set("bootpins", "other");
 #ifdef CONFIG_ENV_IS_IN_MMC
 	board_late_mmc_env_init();
 #endif
