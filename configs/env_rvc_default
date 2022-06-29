@@ -1,0 +1,20 @@
+board_name=ARCELIK RVC
+board_rev=REV1.0
+author=yca
+ipaddr=192.168.0.100
+netmask=255.255.255.0
+serverip=192.168.0.101
+bootcmd=tftp 40400000 config.mk
+loadaddr=0x40480000
+fdt_addr=0x43000000 
+fdt_file=imx8mn-ddr4-evk.dtb
+bootcmd_net=tftp ${loadaddr} Image ; tftp ${fdt_addr} ${fdt_file} ; booti ${loadaddr} - ${fdt_addr}
+bootcmd_fb=echo "Using fastboot..." ; fastboot usb 0
+emmc_dev=2
+fastboot_env=mmc
+target_ubootdev=2
+bootcmd=if test ${bootpins} = usb; then run bootcmd_fb; else run bootcmd_mmc_net; fi;
+bootcmd_mmc_net=echo "Using mmc+net boot..." ; if run loadfdt; then echo "found fdt, booting from mmc"; run loadimage ; booti ${loadaddr} - ${fdt_addr} ; else echo "no fdt, booting from tftp"; run bootcmd_net; fi;
+loadfdt=mmc dev 2 1 ; mmc rescan ; fatload mmc 2:1 ${fdt_addr} ${fdt_file}
+loadimage=fatload mmc 2:1 ${loadaddr} Image
+
