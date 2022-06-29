@@ -217,7 +217,9 @@
 #define CONFIG_IMX_BOOTAUX
 
 /* USDHC */
+#ifndef CONFIG_FSL_USDHC
 #define CONFIG_FSL_USDHC
+#endif
 
 #define CONFIG_SYS_FSL_USDHC_NUM	2
 #define CONFIG_SYS_FSL_ESDHC_ADDR	0
@@ -249,7 +251,9 @@
 
 /* USB configs */
 #ifndef CONFIG_SPL_BUILD
+#ifndef CONFIG_CMD_USB
 #define CONFIG_CMD_USB
+#endif
 #define CONFIG_USB_STORAGE
 #define CONFIG_USBD_HS
 
