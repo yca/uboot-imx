@@ -75,6 +75,7 @@ int board_init(void)
 {
 	call_imx_sip(FSL_SIP_GPC, FSL_SIP_CONFIG_GPC_PM_DOMAIN, DISPMIX, true, 0);
 	call_imx_sip(FSL_SIP_GPC, FSL_SIP_CONFIG_GPC_PM_DOMAIN, MIPI, true, 0);
+	imx8m_usb_power(1, true);
 
 	return 0;
 }
