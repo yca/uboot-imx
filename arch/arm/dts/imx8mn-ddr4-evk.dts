@@ -13,8 +13,8 @@
 	compatible = "fsl,imx8mn-ddr4-evk", "fsl,imx8mn";
 
 	chosen {
-		bootargs = "console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200 g_ether.dev_addr=f8:dc:7a:00:00:02 g_ether.host_addr=f8:dc:7a:00:00:01 root=/dev/nfs nfsroot=192.168.0.101:/srv/nfsroot,vers=4,tcp rw ip=192.168.0.100:192.168.0.101:192.168.0.101:255.255.255.0:arcelik-rvc:usb0:off nfsrootdebug init=/sbin/init";
-		stdout-path = &uart3;
+		bootargs = "console=ttymxc0,115200 earlycon=ec_imx6q,0x30860000,115200 root=/dev/nfs nfsroot=192.168.0.101:/srv/nfsroot,vers=4,tcp rw g_ether.dev_addr=f8:dc:7a:00:00:02 g_ether.host_addr=f8:dc:7a:00:00:01 ip=192.168.0.100:192.168.0.101:192.168.0.101:255.255.255.0:arcelik-rvc:usb0:off init=/sbin/init";
+		stdout-path = &uart1;
 	};
 
 	reg_usdhc2_vmmc: regulator-usdhc2 {
@@ -139,10 +139,10 @@
 		>;
 	};
 
-	pinctrl_uart3: uart3grp {
+	pinctrl_uart1: uart1grp {
 		fsl,pins = <
-			MX8MN_IOMUXC_UART3_RXD_UART3_DCE_RX	0x140
-			MX8MN_IOMUXC_UART3_TXD_UART3_DCE_TX	0x140
+			MX8MN_IOMUXC_UART1_RXD_UART1_DCE_RX	0x140
+			MX8MN_IOMUXC_UART1_TXD_UART1_DCE_TX	0x140
 		>;
 	};
 
@@ -273,9 +273,9 @@
 	status = "okay";
 };
 
-&uart3 { /* console */
+&uart1 { /* console */
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart3>;
+	pinctrl-0 = <&pinctrl_uart1>;
 	status = "okay";
 };
 
